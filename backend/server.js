@@ -6,6 +6,24 @@ const dotenv = require("dotenv").config();
 
 
 const app = express();
+
+
+// middleware used
+app.use(express.json());
+app.use(express.urlencoded({ extended : false }));
+app.use(bodyParser.json());
+
+
+
+
+// routes
+app.get("/",(req,res) =>{
+    res.send("Hey hi its GET HOMEPAGE REQUEST")
+})
+
+
+
+// DB and PORT connection
 const PORT = process.env.PORT || 5000;
 const DB_MONGOOSE = process.env.DB_MONGOOSE;
 
