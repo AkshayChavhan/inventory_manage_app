@@ -25,13 +25,13 @@ const userSchema = mongoose.Schema({
     },
     photo : {
         type : String ,
-        required :false
+        required : true , 
+        default : "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pexels.com%2Fsearch%2Fprofile%2F&psig=AOvVaw0sVQBhGLz-nChaA4lppEue&ust=1693143501295000&source=images&cd=vfe&opi=89978449&ved=0CBAQjRxqFwoTCPjX2re5-oADFQAAAAAdAAAAABAI"
     },
     phone: {
         type : String ,
-        required : [ false ],
-        minlength : [ 10 , "Please enter the phone with minimum 10 number"] ,
-        maxlength : [ 13 , "Please enter the phone with maximum 12 number"],
+        required : true , 
+        default : "91",
     },
     bio: {
         type : String ,
