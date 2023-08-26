@@ -1,5 +1,6 @@
 const User = require("../model/userModel");
 const asyncHandler = require("express-async-handler");
+const bcrypt = require('bcryptjs');
 
 const registerUser = asyncHandler( async (req,res) => {
     const { name , email , password } = req.body ;
@@ -24,20 +25,28 @@ const registerUser = asyncHandler( async (req,res) => {
         throw new Error("Email has already been registered");
     }
 
-    // create new user
-    const user = await User.create({
-        name ,email, password
+    // hashing the password before save into DB
+    bcrypt.genSalt(10,function(err,salt){
+        bcrypt.hash(password ,salt,async function(ee,hash){
+
+            // create new user
+            const user = await User.create({
+                name ,email, password : hash
+            })
+
+            if(user){
+                const { _id , name , email ,photo , phone ,bio } = user ;
+                res.status(201).json({
+                    _id , name , email ,photo , phone ,bio
+                })
+            }else{
+                res.status(400)
+                throw new Error("Something went wrong while creating a new user")
+            }
+        })
     })
 
-    if(user){
-        const { _id , name , email ,photo , phone ,bio } = user ;
-        res.status(201).json({
-            _id , name , email ,photo , phone ,bio
-        })
-    }else{
-        res.status(400)
-        throw new Error("Something went wrong while creating a new user")
-    }
+
 })
 
 module.exports = {
