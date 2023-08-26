@@ -25,21 +25,19 @@ const userSchema = mongoose.Schema({
     },
     photo : {
         type : String ,
-        required :true ,
-        default : ""
+        required :false
     },
     phone: {
         type : String ,
-        required : [ true ],
-        minlength : [ 10 , "Please enter the password with minimum 10 number"] ,
-        maxlength : [ 13 , "Please enter the password with maximum 12 number"],
-        default : "+91"
+        required : [ false ],
+        minlength : [ 10 , "Please enter the phone with minimum 10 number"] ,
+        maxlength : [ 13 , "Please enter the phone with maximum 12 number"],
     },
     bio: {
         type : String ,
         required : false,
-        minlength : [ 50 , "Please enter the password with minimum 50 character"] ,
-        maxlength : [ 100 , "Please enter the password with maximum 100 character"]
+        minlength : [ 50 , "Please enter the bio with minimum 50 character"] ,
+        maxlength : [ 100 , "Please enter the bio with maximum 100 character"]
     }
 },{
     timestamps:true

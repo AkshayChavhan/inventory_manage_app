@@ -17,7 +17,7 @@ const DB_MONGOOSE = process.env.DB_MONGOOSE;
 // middleware used
 app.use(express.json());
 app.use(express.urlencoded({ extended : false }));
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
 
 
 
