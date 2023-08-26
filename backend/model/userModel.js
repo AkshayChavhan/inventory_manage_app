@@ -17,11 +17,11 @@ const userSchema = mongoose.Schema({
     password: {
         type: String,
         required: [true , "Please enter the User Password"],
-        minlength : [ 6 , "Please enter the password with minimum 6 character"] ,
-        maxlength : [ 20 , "Please enter the password with maximum 20 character"],
-        match : [
-            /^[a-zA-Z0-9!@#$%^&*]{6,16}$/ , "Please enter the correct password"
-        ]
+        // minlength : [ 6 , "Please enter the password with minimum 6 character"] ,
+        // maxlength : [ 20 , "Please enter the password with maximum 20 character"],
+        // match : [
+        //     /^[a-zA-Z0-9!@#$%^&*]{6,16}$/ , "Please enter the correct password"
+        // ]
     },
     photo : {
         type : String ,
