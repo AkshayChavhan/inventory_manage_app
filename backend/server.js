@@ -4,9 +4,14 @@ const cors = require("cors")
 const mongoose = require("mongoose")
 const dotenv = require("dotenv").config();
 const userRouter = require("./routes/userRoutes");
-
+const errorHandler = require("./errorMiddleware/errorMiddleware");
 
 const app = express();
+
+
+// DB and PORT connection
+const PORT = process.env.PORT || 5000;
+const DB_MONGOOSE = process.env.DB_MONGOOSE;
 
 
 // middleware used
@@ -22,13 +27,8 @@ app.get("/",(req,res) =>{
     res.send("Hey hi its GET HOMEPAGE REQUEST")
 })
 
-
-
-// DB and PORT connection
-const PORT = process.env.PORT || 5000;
-const DB_MONGOOSE = process.env.DB_MONGOOSE;
-
-
+// Error middleware
+app.use(errorHandler);
 
 //router middleware
 app.use("/api/users" , userRouter);
@@ -36,6 +36,9 @@ app.use("/api/users" , userRouter);
 
 
 
+
+
+// firing DB and server
 mongoose.connect(DB_MONGOOSE ,{
     useNewUrlParser : true ,
     useUnifiedTopology : true,
