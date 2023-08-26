@@ -5,6 +5,7 @@ const mongoose = require("mongoose")
 const dotenv = require("dotenv").config();
 const userRouter = require("./routes/userRoutes");
 const errorHandler = require("./errorMiddleware/errorMiddleware");
+const cookieParser = require("cookie-parser")
 
 const app = express();
 
@@ -16,6 +17,7 @@ const DB_MONGOOSE = process.env.DB_MONGOOSE;
 
 // middleware used
 app.use(express.json());
+app.use(cookieParser());
 app.use(express.urlencoded({ extended : false }));
 // app.use(bodyParser.json());
 
