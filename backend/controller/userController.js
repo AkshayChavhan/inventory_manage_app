@@ -130,9 +130,15 @@ const getUser = asyncHandler(async (req, res) => {
     }
 })
 
+
+const loggedinUser = asyncHandler(async (req, res) => {
+    res.send("User Logged in")
+})
+
 module.exports = {
     registerUser,
     loginUser,
     logoutUser,
-    getUser
+    getUser,
+    loggedinUser
 };
