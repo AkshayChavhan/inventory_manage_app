@@ -119,10 +119,10 @@ const getUser = asyncHandler(async (req, res) => {
     const user = await User.findById(req.user._id)
     if (user) {
 
-        const { _id, name, email, photo, phone, createdAt, updatedAt } = user
+        const { _id, name, email, photo, phone,bio } = user
 
         res.status(201).json({
-            _id, name, email, photo, phone, createdAt, updatedAt
+            _id, name, email, photo, phone, bio
         })
     } else {
         res.status(400);
@@ -130,9 +130,58 @@ const getUser = asyncHandler(async (req, res) => {
     }
 })
 
+const loginStatus = asyncHandler(async (req, res) => {
+    const token = req.cookies.token;
+
+    if (!token) {
+        res.json(false);
+        throw new Error('You are unauthorized to access this resource');
+    }
+
+    // token verification
+    const verifyToken = jwtToken.verify(token, process.env.JWT_SECRET);
+
+    if (verifyToken) {
+        res.json(true);
+    }
+    res.json(false);
+
+})
+
+const updateUser = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+        res.status(400);
+        throw new Error("User not found");
+    }
+
+
+
+    const { name, email, photo, phone } = user;
+    user.email = email;
+    user.name = req.user.name || name;
+    user.photo = req.user.photo || photo;
+    user.phone = req.user.phone || phone;
+
+    // console.clear();
+    // console.log("req => ",req.body);
+
+    const updateUserData = await user.save();
+    res.status(200).json({
+        _id: updateUserData._id ,
+        name: updateUserData.name,
+        email: updateUserData.email,
+        photo: updateUserData.photo,
+        phone: updateUserData.phone
+    })
+})
+
 module.exports = {
     registerUser,
     loginUser,
     logoutUser,
-    getUser
+    getUser,
+    loginStatus,
+    updateUser
 };
