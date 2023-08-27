@@ -9,6 +9,6 @@ router.post("/login" , loginUser);
 router.post("/logout" , logoutUser);
 router.get("/getuser" , authMiddleware , getUser)
 router.get("/loggedin" , loginStatus)
-router.patch("/updateuser" , updateUser)
+router.patch("/updateuser" , authMiddleware , updateUser)
 
 module.exports =  router 
