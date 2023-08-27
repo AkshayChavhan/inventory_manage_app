@@ -131,8 +131,22 @@ const getUser = asyncHandler(async (req, res) => {
 })
 
 
-const loggedinUser = asyncHandler(async (req, res) => {
-    res.send("User Logged in")
+const loginStatus = asyncHandler(async (req, res) => {
+    const token = req.cookies.token;
+
+    if (!token) {
+        res.json(false);
+        throw new Error('You are unauthorized to access this resource');
+    }
+
+    // token verification
+    const verifyToken = jwtToken.verify(token, process.env.JWT_SECRET);
+
+    if (verifyToken) {
+        res.json(true);
+    }
+    res.json(false);
+
 })
 
 module.exports = {
@@ -140,5 +154,5 @@ module.exports = {
     loginUser,
     logoutUser,
     getUser,
-    loggedinUser
+    loginStatus
 };
