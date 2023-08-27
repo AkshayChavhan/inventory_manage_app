@@ -104,7 +104,15 @@ const loginUser = asyncHandler(async (req, res) => {
 })
 
 const logoutUser = asyncHandler(async(req,res) => {
-    res.send("Log ROuter");
+       // cleaning HTTP-only cookie
+       res.cookie("token","", {
+        path: "/",
+        httpOnly: true,
+        expires: 0,  //1 Day
+        sameSite: "none",
+        secure: false,
+    });
+    res.status(200).json({ message : "Log out successfully."})
 })
 
 module.exports = {
