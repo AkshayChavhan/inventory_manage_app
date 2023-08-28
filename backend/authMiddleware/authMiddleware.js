@@ -27,9 +27,6 @@ const authMiddleware = asyncHandler(async (req, res, next) => {
             throw new Error("User not found.")
         }
 
-        console.clear();
-        console.log("req => ",req);
-
         req.user = user ;
         next();
     } catch (error) {
