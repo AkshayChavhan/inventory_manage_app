@@ -119,7 +119,7 @@ const getUser = asyncHandler(async (req, res) => {
     const user = await User.findById(req.user._id)
     if (user) {
 
-        const { _id, name, email, photo, phone,bio } = user
+        const { _id, name, email, photo, phone, bio } = user
 
         res.status(201).json({
             _id, name, email, photo, phone, bio
@@ -156,25 +156,48 @@ const updateUser = asyncHandler(async (req, res) => {
         throw new Error("User not found");
     }
 
-
-
     const { name, email, photo, phone } = user;
     user.email = email;
     user.name = req.user.name || name;
     user.photo = req.user.photo || photo;
     user.phone = req.user.phone || phone;
 
-    // console.clear();
-    // console.log("req => ",req.body);
-
     const updateUserData = await user.save();
     res.status(200).json({
-        _id: updateUserData._id ,
+        _id: updateUserData._id,
         name: updateUserData.name,
         email: updateUserData.email,
         photo: updateUserData.photo,
         phone: updateUserData.phone
     })
+})
+
+const changePassword = asyncHandler(async (req, res) => {
+    const { password, newPassword } = req.body;
+    if (!password && !newPassword) {
+        res.status(400)
+        throw new Error("All inputs required");
+    }
+    if (password === newPassword) {
+        res.status(400)
+        throw new Error("New and Old password should not be same.");
+    }
+    const user = await User.findById(req.user._id);
+    if (!user) {
+        res.status(400)
+        throw new Error("User not found");
+    }
+    const isPasswordValid = await bcrypt.compare(password , user.password);
+    if(isPasswordValid){
+        user.password = password ;
+        await user.save();
+        res.status(200).json({
+            message : `Password changed sucessfully.`
+        })
+    }else{
+        res.status(400)
+        throw new Error("Old Password is incorrect.")
+    }
 })
 
 module.exports = {
@@ -183,5 +206,6 @@ module.exports = {
     logoutUser,
     getUser,
     loginStatus,
-    updateUser
+    updateUser,
+    changePassword
 };
