@@ -11,6 +11,6 @@ router.get("/getuser" , authMiddleware , getUser)
 router.get("/loggedin" , loginStatus)
 router.patch("/updateuser" , authMiddleware , updateUser)
 router.patch("/changepassword" , authMiddleware , changePassword)
-router.post("/forgotpassword" , authMiddleware , forgotPassword)
+router.post("/forgotpassword" , forgotPassword)
 
 module.exports =  router 
