@@ -2,6 +2,8 @@ const User = require("../model/userModel");
 const asyncHandler = require("express-async-handler");
 const jwtToken = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const Token = require("../model/token");
+const crypto = require("crypto");
 
 
 
@@ -187,17 +189,53 @@ const changePassword = asyncHandler(async (req, res) => {
         res.status(400)
         throw new Error("User not found");
     }
-    const isPasswordValid = await bcrypt.compare(password , user.password);
-    if(isPasswordValid){
-        user.password = password ;
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (isPasswordValid) {
+        user.password = password;
         await user.save();
         res.status(200).json({
-            message : `Password changed sucessfully.`
+            message: `Password changed sucessfully.`
         })
-    }else{
+    } else {
         res.status(400)
         throw new Error("Old Password is incorrect.")
     }
+})
+
+
+const forgotPassword = asyncHandler(async (req, res) => {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) {
+        res.status(404)
+        throw new Error('User does not exist with this email');
+    }
+
+    //create reset token
+    let resetToken = crypto.randomBytes(32).toString("hex") + user._id
+    const hashedToken = crypto.createHash("sha1").update(resetToken).digest("hex");
+
+    await new Token({
+        token: hashedToken,
+        userId: user._id,
+        createdAt: Date.now(),
+        expiresAt: Date.now() + 30 * (60 * 100)
+    }).save();
+
+    const resetUrl = `${process.env.FRONTEND_URL}/resetpassword/${hashedToken}`;
+
+    const message = `
+    <h2>Hellow ${user.username}</h2>
+    <p>${user} has requested to change the password</p>
+    <p>This reset link is valid for only 30 minutes</p>
+    <a href=${resetUrl} clicktracking=off >${resetUrl}</a>
+    <p>Regards</p>
+    <p>Akshay Chavhan</p>
+    <p>Product Owner</p>
+    `
+
+    console.log("resetToken => ", hashedToken);
+    res.send("Forget Password");
 })
 
 module.exports = {
@@ -207,5 +245,6 @@ module.exports = {
     getUser,
     loginStatus,
     updateUser,
-    changePassword
+    changePassword,
+    forgotPassword
 };
