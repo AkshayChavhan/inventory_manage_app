@@ -212,6 +212,13 @@ const forgotPassword = asyncHandler(async (req, res) => {
         throw new Error('User does not exist with this email');
     }
 
+    // Check token already available
+    const isTokenAvailable = await Token.findOne({userId :user._id})
+    if(isTokenAvailable){
+        await Token.deleteOne();
+    }
+
+
     //create reset token
     let resetToken = crypto.randomBytes(32).toString("hex") + user._id
     const hashedToken = crypto.createHash("sha1").update(resetToken).digest("hex");
@@ -240,15 +247,19 @@ const forgotPassword = asyncHandler(async (req, res) => {
     const send_from = process.env.EMAIL_USER;
 
     try {
-        await sendEmail({
+        const iMailSendSucessfull = await sendEmail({
             subject,
             message,
             send_to,
             send_from,
-        })
-        res.status(200).json({
-            success : true , message : "Reset Email sent"
-        })
+        });
+
+        if(iMailSendSucessfull){
+            console.log("Mail sent sucessfully");
+            res.status(200).json({
+                success : true , message : "Reset Email sent"
+            })
+        }
     } catch (error) {
         res.status(500)
         throw new Error("Email not send , please try again")
