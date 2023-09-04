@@ -17,19 +17,21 @@ const sendEmail = async (subject ,message ,send_to , send_from , reply_to) => {
     const options = {
         from : send_from ,
         to : send_to ,
-        replyTo : reply_to ,
+        // replyTo : reply_to ,
         subect : subject ,
         html : message
     }
 
     // send Email
-    transporter.sendMail(options , function(err ,info){
+    const info = await transporter.sendMail(options , function(err ,info){
         if(err){
             console.log(err)
         }else{
             console.log(info)
         }
     })
+
+    console.log("Message sent: %s", info.messageId);
 }
 
 

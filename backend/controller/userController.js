@@ -4,6 +4,7 @@ const jwtToken = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const Token = require("../model/token");
 const crypto = require("crypto");
+const sendEmail = require("../utils/sendEmail");
 
 
 
@@ -211,6 +212,13 @@ const forgotPassword = asyncHandler(async (req, res) => {
         throw new Error('User does not exist with this email');
     }
 
+    // Check token already available
+    const isTokenAvailable = await Token.findOne({userId :user._id})
+    if(isTokenAvailable){
+        await Token.deleteOne();
+    }
+
+
     //create reset token
     let resetToken = crypto.randomBytes(32).toString("hex") + user._id
     const hashedToken = crypto.createHash("sha1").update(resetToken).digest("hex");
@@ -234,8 +242,28 @@ const forgotPassword = asyncHandler(async (req, res) => {
     <p>Product Owner</p>
     `
 
-    console.log("resetToken => ", hashedToken);
-    res.send("Forget Password");
+    const subject = "Password reset request";
+    const send_to = user.email;
+    const send_from = process.env.EMAIL_USER;
+
+    try {
+        const iMailSendSucessfull = await sendEmail({
+            subject,
+            message,
+            send_to,
+            send_from,
+        });
+
+        if(iMailSendSucessfull){
+            console.log("Mail sent sucessfully");
+            res.status(200).json({
+                success : true , message : "Reset Email sent"
+            })
+        }
+    } catch (error) {
+        res.status(500)
+        throw new Error("Email not send , please try again")
+    }
 })
 
 module.exports = {
