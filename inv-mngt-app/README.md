@@ -68,3 +68,22 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+==================================================================================================================================================
+
+Default installation to add Material UI to your project:
+
+npm install @mui/material @emotion/react @emotion/styled
+
+With styled-components :- Material UI uses Emotion as its default styling engine. If you want to use styled-components instead, 
+run one of the following commands
+
+npm install @mui/material @mui/styled-engine-sc styled-components
+
+Icons : To use the font Icon component or the prebuilt SVG Material Icons
+
+npm install @mui/icons-material
+
+
+==================================================================================================================================================
