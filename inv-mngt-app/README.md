@@ -87,3 +87,5 @@ npm install @mui/icons-material
 
 
 ==================================================================================================================================================
+
+Cheatsheet for tailwind css : - https://tailwindcomponents.com/cheatsheet/
