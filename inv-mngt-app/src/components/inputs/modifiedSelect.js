@@ -1,16 +1,16 @@
 import React from 'react';
-import { Input } from '@mui/material';
+import { FormControl, Input, InputLabel, MenuItem, Select } from '@mui/material';
 import TextField from '@mui/material/TextField';
 
-export default function ModifiedSelect({ label="", onChange =()=>{} , options={}}) {
+export default function ModifiedSelect({ label = "", value , handleChange = () => { }, options = {} }) {
 
   options = {
     ...options,
-    size : "small",
-    id : "outlined-size-small",
-    defaultValue : "",
+    width: "small",
+    id: "outlined-size-small",
+    defaultValue: "",
     // variant : "filled",
-    horizontalLabel : false,
+    horizontalLabel: false,
   }
 
   return (
@@ -19,23 +19,36 @@ export default function ModifiedSelect({ label="", onChange =()=>{} , options={}
         options.horizontalLabel ?
           <div>
             <label>{label}</label>
-            <TextField
-              id={options.id}
-              defaultValue={options.defaultValue}
-              size={options.size}
-              variant={options.variant}
-              onChange={onChange}
-            />
+            <FormControl fullWidth={options.width} sx={{ m: 1, minWidth: 120 }}>
+              <InputLabel id="demo-simple-select-label">Age</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={value}
+                // label={label}
+                onChange={handleChange}
+              >
+                <MenuItem value={10}>Ten</MenuItem>
+                <MenuItem value={20}>Twenty</MenuItem>
+                <MenuItem value={30}>Thirty</MenuItem>
+              </Select>
+            </FormControl>
           </div> :
           <div>
-            <TextField
-              label={label}
-              id={options.id}
-              defaultValue={options.defaultValue}
-              size={options.size}
-              variant={options.variant}
-              onChange={onChange}
-            />
+            <FormControl fullWidth={options.width} sx={{ m: 1, minWidth: 120 }}>
+              <InputLabel id="demo-simple-select-label">Age</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={value}
+                label={label}
+                onChange={handleChange}
+              >
+                <MenuItem value={10}>Ten</MenuItem>
+                <MenuItem value={20}>Twenty</MenuItem>
+                <MenuItem value={30}>Thirty</MenuItem>
+              </Select>
+            </FormControl>
           </div>
       }
     </>
