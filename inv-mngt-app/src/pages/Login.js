@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import { ModifiedTextfield } from "../components/inputs/input";
 import CustomizedButtons from '../components/action_buttons/action_buttons';
 import Avatar from '@mui/material/Avatar';
-// import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-// import TextField from '@mui/material/TextField';
 // import FormControlLabel from '@mui/material/FormControlLabel';
 // import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
@@ -33,31 +31,26 @@ function Copyright(props) {
   );
 }
 
-export default function SignUp() {
+export default function Login() {
 
   const [form, setForm] = useState({
-    name: "",
     email: "",
     password: ""
   })
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.post("http://localhost:5000/api/users/register", form);
-      if(response.status){
-        alert('User created successfully');
+      const response = await axios.post("http://localhost:5000/api/users/login", form);
+      if (response.status) {
+        alert('Login successfully.');
       }
-      setForm({
-        name: "",
-        email: "",
-        password: ""
-      });
-      redirect("/login")
+      redirect("/welcome")
+
     } catch (error) {
       console.error("Error =>", error.response ? error.response.data : error.message);
     }
   };
-  
+
 
   return (
     <>
@@ -92,20 +85,12 @@ export default function SignUp() {
                 <LockOutlinedIcon />
               </Avatar>
               <Typography component="h1" variant="h5">
-                Register Now
+                Login
               </Typography>
               <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
                 <ModifiedTextfield
-                  label="Name"
-                  placeholder="<NAME>"
-                  value={form?.name || ""}
-                  onChange={(e) => { setForm({ ...form, name: e.target.value }) }}
-                  options={{ horizontalLabel: true }}
-                  required={true}
-                />
-                <ModifiedTextfield
                   label="Email"
-                  placeholder="<NAME>"
+                  placeholder="Enter Email"
                   value={form?.email || ""}
                   onChange={(e) => { setForm({ ...form, email: e.target.value }) }}
                   options={{ horizontalLabel: true }}
@@ -113,7 +98,7 @@ export default function SignUp() {
                 />
                 <ModifiedTextfield
                   label="Password"
-                  placeholder="<NAME>"
+                  placeholder="Enter Password"
                   value={form?.password || ""}
                   onChange={(e) => { setForm({ ...form, password: e.target.value }) }}
                   options={{ horizontalLabel: true }}
@@ -128,7 +113,7 @@ export default function SignUp() {
                 <Grid container >
                   <Grid item xs={8}>
                     <CustomizedButtons
-                      content={"Register"}
+                      content={"Login"}
                       onClick={handleSubmit}
                     />
                   </Grid>
@@ -138,18 +123,9 @@ export default function SignUp() {
                     />
                   </Grid>
                 </Grid>
-                <Grid container>
-                  <Grid item xs>
-                    <Link href="#" variant="body2">
-                      Forgot password?
-                    </Link>
-                  </Grid>
-                  <Grid item>
-                    <Link href="#" variant="body2">
-                      {"Already have an account? Log in"}
-                    </Link>
-                  </Grid>
-                </Grid>
+                <Link href="#" variant="body2">
+                  Forgot password?
+                </Link>
                 <Copyright sx={{ mt: 5 }} />
               </Box>
             </Box>
