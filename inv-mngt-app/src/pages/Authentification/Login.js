@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { ModifiedTextfield } from "../components/inputs/input";
-import CustomizedButtons from '../components/action_buttons/action_buttons';
+import { ModifiedTextfield } from "../../components/inputs/input";
+import CustomizedButtons from '../../components/action_buttons/action_buttons';
 import Avatar from '@mui/material/Avatar';
 import CssBaseline from '@mui/material/CssBaseline';
 // import FormControlLabel from '@mui/material/FormControlLabel';
@@ -13,7 +13,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from "axios";
-import { redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 const defaultTheme = createTheme();
@@ -32,7 +32,7 @@ function Copyright(props) {
 }
 
 export default function Login() {
-
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     email: "",
     password: ""
@@ -42,10 +42,8 @@ export default function Login() {
     try {
       const response = await axios.post("http://localhost:5000/api/users/login", form);
       if (response.status) {
-        alert('Login successfully.');
+        navigate("/welcome")
       }
-      redirect("/welcome")
-
     } catch (error) {
       console.error("Error =>", error.response ? error.response.data : error.message);
     }

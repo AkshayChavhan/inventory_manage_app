@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { ModifiedTextfield } from "../components/inputs/input";
-import CustomizedButtons from '../components/action_buttons/action_buttons';
+import { ModifiedTextfield } from "../../components/inputs/input";
+import CustomizedButtons from '../../components/action_buttons/action_buttons';
 import Avatar from '@mui/material/Avatar';
 // import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -15,7 +15,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from "axios";
-import { redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 const defaultTheme = createTheme();
@@ -34,6 +34,7 @@ function Copyright(props) {
 }
 
 export default function SignUp() {
+  const navigate = useNavigate();
 
   const [form, setForm] = useState({
     name: "",
@@ -52,7 +53,7 @@ export default function SignUp() {
         email: "",
         password: ""
       });
-      redirect("/login")
+      navigate("/login")
     } catch (error) {
       console.error("Error =>", error.response ? error.response.data : error.message);
     }
@@ -145,7 +146,7 @@ export default function SignUp() {
                     </Link>
                   </Grid>
                   <Grid item>
-                    <Link href="#" variant="body2">
+                    <Link href="/login" variant="body2">
                       {"Already have an account? Log in"}
                     </Link>
                   </Grid>
